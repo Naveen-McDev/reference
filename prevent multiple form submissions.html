@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- preventing multiple form submissions -->
+    <form action="https://637efaab5b1cc8d6f937d79a.mockapi.io/login" method="post" id="form1">
+        <input type="text" name="name" placeholder="name" />
+        <button type="submit" name="myBtn" onclick="this.disabled=true;this.value='Submitting...'; this.form.submit();">Submit</button>
+    </form>
+</body>
+
+</html>
