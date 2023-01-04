@@ -18,13 +18,13 @@
         }
         window.onload = function () {
           google.accounts.id.initialize({
-            client_id: "314007490709-8t8ihh1fit1j8ae35682j3ru7b1l2hpa.apps.googleusercontent.com",
+            client_id: "YOUR_GOOGLE_CLIENT_ID",
             callback: handleCredentialResponse
           });
-        //   google.accounts.id.renderButton(
-        //     document.getElementById("buttonDiv"),
-        //     { theme: "outline", size: "large" }  // customization attributes
-        //   );
+          google.accounts.id.renderButton(
+            document.getElementById("buttonDiv"),
+            { theme: "outline", size: "large" }  // customization attributes
+          );
           google.accounts.id.prompt(); // also display the One Tap dialog
         }
     </script>
