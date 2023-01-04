@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer-when-downgrade" />
+  <title>Document</title>
+</head>
+
+<body>
+
+  <!-- <div id="buttonDiv"></div>  -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script>
+
+    function parseJwt(response) {
+      // spliting the token received in the props
+      let base64Url = response.split(".")[1];
+
+      // replacing the characters
+      let base64 = base64Url.replace("/-/g", "+").replace(/_/g, '/');
+
+      // function to retur the json
+      var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      }).join(''));
+
+      let json = JSON.parse(jsonPayload);
+
+      let value = [
+        {
+          name : json.name,
+          email: json.email
+        }
+      ];
+      console.log(value)
+
+    }
+
+    function handleCredentialResponse(response) {
+      // console.log("Encoded JWT ID token: " + response.credential);
+      parseJwt(response.credential)
+    }
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: "314007490709-8t8ihh1fit1j8ae35682j3ru7b1l2hpa.apps.googleusercontent.com",
+        callback: handleCredentialResponse
+      });
+        google.accounts.id.renderButton(
+          document.getElementById("buttonDiv"),
+          { theme: "outline", size: "large" }  // customization attributes
+        );
+      google.accounts.id.prompt(); // also display the One Tap dialog
+    }
+  </script>
+
+</body>
+
+</html>
