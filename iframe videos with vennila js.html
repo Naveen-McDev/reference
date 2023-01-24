@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <!-- heading -->
+    <h2>Iframe Test in vennila js</h2>
+
+    <!-- section for iframes -->
+    <section id="youTube_Tes">
+      <!-- container -->
+      <div id="tes_01">
+        <!-- thumbnail -->
+        <img
+          onclick="iframe('9amCfdwQzD4', 'tes_01', 'youtube_tes_vd-01')"
+          src="https://img.youtube.com/vi/9amCfdwQzD4/sddefault.jpg"
+          id="youtube_tes_vd-01"
+          alt=""
+          width="560px"
+          height="315px"
+          class="youTube_iframe"
+        />
+        <!-- iframe will be generated here when thumbnail is clicked -->
+      </div>
+
+      <!-- container -->
+      <div id="tes_02">
+        <!-- thumbnail -->
+        <img
+          onclick="iframe('UNbjLOLdFxM', 'tes_02', 'youtube_tes_vd-02')"
+          src="https://img.youtube.com/vi/UNbjLOLdFxM/sddefault.jpg"
+          id="youtube_tes_vd-02"
+          alt=""
+          width="560px"
+          height="315px"
+          class="youTube_iframe"
+        />
+        <!-- iframe will be generated here when thumbnail is clicked -->
+      </div>
+
+      <!-- container -->
+      <div id="tes_03">
+        <!-- thumbnail -->
+        <img
+          onclick="iframe('H3uSB2GWqjg', 'tes_03', 'youtube_tes_vd-03')"
+          src="https://img.youtube.com/vi/H3uSB2GWqjg/sddefault.jpg"
+          id="youtube_tes_vd-03"
+          alt=""
+          width="560px"
+          height="315px"
+          class="youTube_iframe"
+        />
+        <!-- iframe will be generated here when thumbnail is clicked -->
+      </div>
+
+      <!-- container -->
+      <div id="tes_04">
+        <!-- thumbnail -->
+        <img
+          onclick="iframe('IHLo8Fkr3zQ', 'tes_04', 'youtube_tes_vd-04')"
+          src="https://img.youtube.com/vi/IHLo8Fkr3zQ/sddefault.jpg"
+          id="youtube_tes_vd-04"
+          alt=""
+          width="560px"
+          height="315px"
+          class="youTube_iframe"
+        />
+        <!-- iframe will be generated here when thumbnail is clicked -->
+      </div>
+
+      <!-- container -->
+      <div id="tes_05">
+        <!-- thumbnail -->
+        <img
+          onclick="iframe('IbmkpJDl-cY', 'tes_05', 'youtube_tes_vd-05')"
+          src="https://img.youtube.com/vi/IbmkpJDl-cY/sddefault.jpg"
+          id="youtube_tes_vd-05"
+          alt=""
+          width="560px"
+          height="315px"
+          class="youTube_iframe"
+        />
+        <!-- iframe will be generated here when thumbnail is clicked -->
+      </div>
+    </section>
+
+    <script>
+      // handleClick
+      // sending the videoID, containerID, and thumbnailID in parenthesis
+      function iframe(url, container, imgId) {
+        // on clicking any thumbnail.. delete all the iframes initially
+        let iframes = window.document.querySelectorAll("iframe");
+
+        for (var i = 0; i < iframes.length; i++) {
+          iframes[i].parentNode.removeChild(iframes[i]);
+        }
+
+        // select all the respective thumbnails with same class
+        // returns and object
+        let images = document.querySelectorAll(".youTube_iframe");
+
+        // converting object to array
+        let imagesArray = Object.values(images);
+
+        // filering the ID which is clicked
+        let filterById = imagesArray.filter((image) => {
+          return image.id == imgId;
+        });
+
+        // setting display none
+        filterById[0].style.display = "none";
+
+        // filtering all the ID which is not clicked
+        let inverseFilterById = imagesArray.filter((image) => {
+          return image.id != imgId;
+        });
+
+        // setting display block
+        inverseFilterById.map((image) => {
+          return (image.style.display = "block");
+        });
+
+        // on clicking the thumbnail, the iframe is created
+        const iframe = document.createElement("iframe");
+        iframe.setAttribute("frameborder", "0");
+        iframe.setAttribute("allowfullscreen", "1");
+        iframe.setAttribute(
+          "allow",
+          "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        );
+        iframe.style.width = "560px";
+        iframe.style.height = "315px";
+        iframe.setAttribute(
+          "src",
+          `https://www.youtube.com/embed/${url}?rel=0&showinfo=1&autoplay=1`
+        );
+
+        // setting the iframe inside their respective container
+        let videoContainer = document.getElementById(container);
+        videoContainer.appendChild(iframe);
+      }
+    </script>
+  </body>
+</html>
