@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer-when-downgrade" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <!-- <div id="buttonDiv"></div>  -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script type="module">
+      // Import the functions you need from the SDKs you need
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-auth.js";
+      import {
+        getDatabase,
+        ref,
+        set
+      } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
+      // TODO: Add SDKs for Firebase products that you want to use
+      // https://firebase.google.com/docs/web/setup#available-libraries
+
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: process.env.API_KEY,
+        authDomain: process.env.AUTH_DOMAIN,
+        projectId: process.env.PROJECT_ID,
+        storageBucket: process.env.STORAGE_BUCKET,
+        messagingSenderId: process.env.MESSAGING_SENDER_ID,
+        appId: process.env.APP_ID,
+        databaseURL: process.env.DATABASE_URL,
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const database = getDatabase(app);
+
+      function parseJwt(response) {
+        // spliting the token received in the props
+        let base64Url = response.split(".")[1];
+
+        // replacing the characters
+        let base64 = base64Url.replace("/-/g", "+").replace(/_/g, "/");
+
+        // function to retur the json
+        var jsonPayload = decodeURIComponent(
+          window
+            .atob(base64)
+            .split("")
+            .map(function (c) {
+              return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+            })
+            .join("")
+        );
+
+        let json = JSON.parse(jsonPayload);
+        // console.log(json);
+
+        let value = {
+          name: json.name,
+          email: json.email,
+        };
+        // console.log(value);
+
+        set(ref(database, "users/" + value.name), {
+          username: value.name,
+          email: value.email,
+        });
+        alert("saved");
+      }
+
+      function handleCredentialResponse(response) {
+        // console.log("Encoded JWT ID token: " + response.credential);
+        parseJwt(response.credential);
+      }
+      window.onload = function () {
+        google.accounts.id.initialize({
+          client_id:
+            process.env.CLIENT_ID,
+          callback: handleCredentialResponse,
+        });
+        google.accounts.id.renderButton(
+          document.getElementById("buttonDiv"),
+          { theme: "outline", size: "large" } // customization attributes
+        );
+        google.accounts.id.prompt(); // also display the One Tap dialog
+      };
+    </script>
+  </body>
+</html>
